@@ -25,5 +25,6 @@ def search():
         f"signal_level={signal_level}"
     )
 
+
 if __name__ == '__main__':
     app.run(debug=True)
