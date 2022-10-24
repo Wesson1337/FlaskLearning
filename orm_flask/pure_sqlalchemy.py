@@ -58,5 +58,3 @@ print(User.get_all_users())
 #
 # b = Blog('test', 'test', 'test', True, datetime.now(), datetime.now())
 # metadata.create_all(engine)
-
-
