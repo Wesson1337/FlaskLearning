@@ -9,9 +9,18 @@ class User(db.Model):
     def __repr__(self):
         return f"User №{self.id}"
 
-    def to_json(self):
+    def to_dict(self) -> dict:
         return {
             "id": self.id,
             "username": self.username,
             "email": self.email
         }
+
+
+class Parent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    children = db.relationship('Child')
+
+
+class Child(db.Model):
+    id = db.Column()

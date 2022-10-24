@@ -1,19 +1,16 @@
 from flask import Flask
-from flask_restful import Api
 
 from database import db
-from orm_flask.resources import Products, Product
+from orm_flask.resources import users_api_bp
 
 app = Flask(__name__)
-api = Api(app)
 
 # Database config
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.db'
 
 
 # Api resources
-api.add_resource(Products, '/products')
-api.add_resource(Product, '/products/<int:pk>')
+app.register_blueprint(users_api_bp)
 
 db.init_app(app)
 
