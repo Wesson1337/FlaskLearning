@@ -19,7 +19,7 @@ class Products(Resource):
         db.session.add(new_user)
         db.session.commit()
 
-        return f"Товар успешно создан", 201
+        return f"Пользователь успешно создан", 201
 
 
 
