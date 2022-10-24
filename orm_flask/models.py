@@ -19,8 +19,9 @@ class User(db.Model):
 
 class Parent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    children = db.relationship('Child')
+    children = db.relationship('Child', backref='parents')
 
 
 class Child(db.Model):
-    id = db.Column()
+    id = db.Column(db.Integer, primary_key=True)
+    parent_id = db.Column(db.Integer, db.ForeignKey('parent.id'))
