@@ -1,12 +1,23 @@
 from flask import Flask
+from flask_restful import Api
+
+from database import db
+from orm_flask.resources import Products
 
 app = Flask(__name__)
+api = Api(app)
+
+# Database config
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.db'
 
 
-@app.route('/hello/<username>')
-def hello_world(username) -> str:  # put application's code here
-    return f'Hello {username}!'
+# Api resources
+api.add_resource(Products, '/products')
 
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
 
 if __name__ == '__main__':
     app.run(debug=True)
