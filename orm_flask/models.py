@@ -17,11 +17,17 @@ class User(db.Model):
         }
 
 
+association_table = db.Table(
+    'association_table',
+    db.Column('parent_id', db.ForeignKey('parent.id'), primary_key=True),
+    db.Column('child_id', db.ForeignKey('child.id'), primary_key=True)
+)
+
+
 class Parent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    children = db.relationship('Child', backref='parents')
+    children = db.relationship('Child', secondary=association_table, backref='parents')
 
 
 class Child(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    parent_id = db.Column(db.Integer, db.ForeignKey('parent.id'))

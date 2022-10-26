@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # Database config
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.db'
-
+app.config['SQLALCHEMY_ECHO'] = True
 
 # Api resources
 app.register_blueprint(users_api_bp)
