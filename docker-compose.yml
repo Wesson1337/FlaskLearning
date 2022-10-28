@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  app:
+    build: .
+    stop_signal: SIGKILL
+    ports:
+      - "5000:5000"
+  spam:
+    build: spam
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./config.yml:/etc/prometheus/prometheus.yml
+    expose:
+      - "9090"
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
