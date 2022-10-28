@@ -11,23 +11,23 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 INPUT_VALUES = [
-    'https://www.wikipedia.org/'
-] * 20
+    'https://yakitoriya.ru'
+] * 200
 
 
 def task(url: str):
     response = requests.get(url, timeout=(5, 5))
-    return len(response.content)
+    return response.status_code
 
 
 async def async_task(url: str):
     async with ClientSession() as session:
         async with session.get(url=url) as response:
-            return await response.content.read()
+            return response.status
 
 
 def task_execution_with_threadpool():
-    pool = ThreadPool(processes=multiprocessing.cpu_count() * 10)
+    pool = ThreadPool(processes=8)
     start = time.time()
     result = pool.map(task, INPUT_VALUES)
     pool.close()
@@ -69,9 +69,10 @@ async def task_execution_with_async():
     end = time.time()
 
     logger.info(f'Time taken in seconds with async - {end - start}')
-    logger.info(len(results))
+    logger.info(results)
 
 if __name__ == '__main__':
-    task_execution_with_threadpool()
-    task_execution_with_processpool()
+    # sequential_approach()
+    # task_execution_with_threadpool()
+    # task_execution_with_processpool()
     asyncio.run(task_execution_with_async())
