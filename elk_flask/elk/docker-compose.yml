@@ -2,13 +2,6 @@ version: '3.7'
 
 services:
 
-  app:
-    build: app
-    depends_on:
-      - logstash
-      - kibana
-      - elasticsearch
-
   # The 'setup' service runs a one-off script which initializes the
   # 'logstash_internal' and 'kibana_system' users inside Elasticsearch with the
   # values of the passwords defined in the '.env' file.
@@ -24,8 +17,6 @@ services:
     init: true
     volumes:
       - setup:/state:Z
-      # (!) CA certificate. Generate using instructions from tls/README.md
-      - ./tls/kibana/elasticsearch-ca.pem:/elasticsearch-ca.pem:ro,z
     environment:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
       LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
@@ -43,9 +34,6 @@ services:
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,z
       - elasticsearch:/usr/share/elasticsearch/data:z
-      # (!) TLS certificates. Generate using instructions from tls/README.md.
-      - ./tls/elasticsearch/elasticsearch.p12:/usr/share/elasticsearch/config/elasticsearch.p12:ro,z
-      - ./tls/elasticsearch/http.p12:/usr/share/elasticsearch/config/http.p12:ro,z
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -69,9 +57,8 @@ services:
     volumes:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
       - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
-      # (!) CA certificate. Generate using instructions from tls/README.md
-      - ./tls/kibana/elasticsearch-ca.pem:/usr/share/logstash/config/elasticsearch-ca.pem:ro,z
     ports:
+      - "5959:5959"
       - "5044:5044"
       - "50000:50000/tcp"
       - "50000:50000/udp"
@@ -91,16 +78,12 @@ services:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
       - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
-      # (!) TLS certificates. Generate using instructions from tls/README.md.
-      - ./tls/kibana/elasticsearch-ca.pem:/usr/share/kibana/config/elasticsearch-ca.pem:ro,z
-      - ./tls/kibana/instance.crt:/usr/share/kibana/config/instance.crt:ro,z
-      - ./tls/kibana/instance.key:/usr/share/kibana/config/instance.key:ro,z
     ports:
       - "5601:5601"
     environment:
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
       # Fleet plugin
-      KIBANA_FLEET_SETUP: '1'
+      KIBANA_FLEET_SETUP: '0'
     networks:
       - elk
     depends_on:

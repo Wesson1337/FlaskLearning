@@ -444,9 +444,9 @@ See the following Wiki pages:
 [connect-kibana]: https://www.elastic.co/guide/en/kibana/current/connect-to-elasticsearch.html
 [index-pattern]: https://www.elastic.co/guide/en/kibana/current/index-patterns.html
 
-[config-es]: elasticsearch/config/elasticsearch.yml
-[config-kbn]: kibana/config/kibana.yml
-[config-ls]: logstash/config/logstash.yml
+[config-es]: elasticsearchonfig/elasticsearch.yml
+[config-kbn]: kibanaonfig/kibana.yml
+[config-ls]: logstashonfig/logstash.yml
 
 [es-docker]: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 [kbn-docker]: https://www.elastic.co/guide/en/kibana/current/docker.html
