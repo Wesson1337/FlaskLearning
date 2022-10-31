@@ -9,6 +9,11 @@ def hello():
     return "<h1 style='color:blue'>Hello There!</h1>"
 
 
+@app.route("/error")
+def error():
+    return 1/0
+
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True)
 
